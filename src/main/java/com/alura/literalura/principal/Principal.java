@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import com.alura.literalura.model.DatosBusqueda;
 import com.alura.literalura.model.DatosLibro;
+import com.alura.literalura.model.Libro;
+import com.alura.literalura.repository.AutorRepository;
+import com.alura.literalura.repository.LibroRepository;
 import com.alura.literalura.service.ConsumoAPI;
 import com.alura.literalura.service.ConvierteDatos;
 
@@ -14,6 +17,13 @@ public class Principal {
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoAPI = new ConsumoAPI();
     private ConvierteDatos conversor = new ConvierteDatos();
+    private LibroRepository libroRepository;
+    private AutorRepository autorRepository;
+
+    public Principal(LibroRepository libroRepository, AutorRepository autorRepository){
+        this.libroRepository = libroRepository;
+        this.autorRepository = autorRepository;
+    }
 
     public void verMenu(){
         var opcion = -1;
@@ -37,29 +47,6 @@ public class Principal {
                 default: System.out.println("Opción inválida"); break;
             }
         }
-    }
-
-    public DatosLibro getDatosLibro(){
-        System.out.println("Ingrese el nombre del libro de desea buscar");
-        var nombreLibro = teclado.nextLine();
-        var json = consumoAPI.obtenerDatos("https://gutendex.com/books/?search="+nombreLibro.replace(" ", "+"));
-        
-        DatosBusqueda datos = conversor.obtenerDatos(json, DatosBusqueda.class);
-        DatosLibro libro = null;
-
-        if(!datos.resultados().isEmpty()){
-            libro = datos.resultados().get(0);
-        }
-
-        return libro;
-    }
-
-    private DatosLibro getLibroPorId(Integer id){
-        var json = consumoAPI.obtenerDatos("https://gutendex.com/books/?ids=" + id);
-        DatosBusqueda busqueda = new ConvierteDatos().obtenerDatos(json, DatosBusqueda.class);
-		DatosLibro libro = busqueda.resultados().get(0);
-
-        return libro;
     }
 
     private void mostrarLibro(DatosLibro libro){
@@ -86,9 +73,17 @@ public class Principal {
     }
     
     private void buscarLibroPorTitulo(){
-        DatosLibro libro = getDatosLibro();
-        if(libro != null){
-            mostrarLibro(libro);
+        System.out.println("Ingrese el nombre del libro de desea buscar");
+        var nombreLibro = teclado.nextLine();
+        var json = consumoAPI.obtenerDatos("https://gutendex.com/books/?search="+nombreLibro.replace(" ", "+"));
+        
+        DatosBusqueda datos = conversor.obtenerDatos(json, DatosBusqueda.class);
+        DatosLibro datosLibro = null;
+
+        if(!datos.resultados().isEmpty()){
+            datosLibro = datos.resultados().get(0);
+            Libro libro = new Libro(datosLibro);
+            libroRepository.save(libro);
         }else{
             System.out.println("No se encontró el libro.");
         }
