@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.alura.literalura.model.Autor;
+import com.alura.literalura.model.DatosAutor;
 import com.alura.literalura.model.DatosBusqueda;
 import com.alura.literalura.model.DatosLibro;
 import com.alura.literalura.model.Libro;
@@ -82,8 +84,21 @@ public class Principal {
 
         if(!datos.resultados().isEmpty()){
             datosLibro = datos.resultados().get(0);
+            DatosAutor datosAutor = datosLibro.autores().get(0);
+            Autor autor = new Autor(datosAutor);
             Libro libro = new Libro(datosLibro);
-            libroRepository.save(libro);
+            
+            libro.setAutor(autor);            
+            System.out.println(libro);
+
+            Optional<Libro> libroRegistrado = libroRepository.findByTituloContainsIgnoreCase(libro.getTitulo());
+            
+            if(libroRegistrado.isPresent()){
+                System.out.println("El libro ya exite.");
+            }else{
+                autorRepository.save(autor);
+                libroRepository.save(libro);
+            }
         }else{
             System.out.println("No se encontró el libro.");
         }

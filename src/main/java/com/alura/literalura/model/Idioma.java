@@ -1,10 +1,10 @@
 package com.alura.literalura.model;
 
 public enum Idioma {
-    es("es", "Español"),
-    en("en", "Ingles"),
-    fr("fr", "Frances"),
-    pt("pt", "Portugues");
+    es("[es]", "Español"),
+    en("[en]", "Ingles"),
+    fr("[fr]", "Frances"),
+    pt("[pt]", "Portugues");
 
     private String idiomaOriginal;
     private String idiomaEspanol;

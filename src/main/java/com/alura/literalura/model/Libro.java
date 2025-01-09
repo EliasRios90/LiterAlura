@@ -1,7 +1,5 @@
 package com.alura.literalura.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,7 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,11 +18,11 @@ public class Libro {
     private Long id;
     @Column(unique = true)
     private String titulo;
-    @ManyToMany
-    private List<Autor> autores;
     @Enumerated(EnumType.STRING)
     private Idioma idioma;
     private Integer numeroDeDescargas;
+    @ManyToOne
+    private Autor autor;
 
     public Libro(){}
 
@@ -46,11 +44,11 @@ public class Libro {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    public List<Autor> getAutores() {
-        return autores;
+    public Autor getAutor() {
+        return autor;
     }
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
     public Idioma getIdioma() {
         return idioma;
@@ -66,19 +64,12 @@ public class Libro {
     }
 
     @Override
-    public String toString() {
-        String nombreAutores = "";
-        if(autores.size() > 1){
-            for(int i=0; i<autores.size(); i++){
-                nombreAutores += autores.get(i).getNombre() + " | ";
-            }
-        }else nombreAutores = autores.get(0).getNombre();
-        
+    public String toString() {        
         return String.format("-------------------- Libro --------------------\n"+
             "Título: %s\n" +
             "Autor: %s\n" +
             "Idioma: %s\n" +
             "Número de descargas: %s\n",
-            titulo, nombreAutores, idioma, numeroDeDescargas);
+            titulo, autor.getNombre(), idioma, numeroDeDescargas);
     }    
 }
