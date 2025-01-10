@@ -21,6 +21,8 @@ public class Principal {
     private ConvierteDatos conversor = new ConvierteDatos();
     private LibroRepository libroRepository;
     private AutorRepository autorRepository;
+    private List<Libro> libros;
+    private List<Autor> autores;
 
     public Principal(LibroRepository libroRepository, AutorRepository autorRepository){
         this.libroRepository = libroRepository;
@@ -45,6 +47,8 @@ public class Principal {
             switch(opcion){
                 case 1: buscarLibroPorTitulo(); break;
                 case 2: mostrarLibrosRegistrados(); break;
+                case 3: mostrarAutoresRegistrados(); break;
+                case 4: mostrarAutoresVivosPorAnio(); break;
                 case 0: System.out.println("Cerrando la aplicación..."); break;
                 default: System.out.println("Opción inválida"); break;
             }
@@ -105,6 +109,20 @@ public class Principal {
     }
 
     private void mostrarLibrosRegistrados(){
-        //
+        libros = libroRepository.findAll();
+        libros.forEach(System.out::println);
+    }
+
+    private void mostrarAutoresRegistrados(){
+        autores = autorRepository.findAll();
+        autores.forEach(System.out::println);
+    }
+
+    private void mostrarAutoresVivosPorAnio(){
+        System.out.println("Ingrese el año para la búsqueda");
+        Integer anio = teclado.nextInt();
+        teclado.nextLine();
+        autores = autorRepository.listaAutoresVivos(anio);
+        autores.forEach(System.out::println);
     }
 }

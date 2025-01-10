@@ -1,5 +1,6 @@
 package com.alura.literalura.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -65,12 +66,25 @@ public class Autor {
         this.fechaDeFallecimiento = fechaDeFallecimiento;
     }
 
+    public List<Libro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
+    }
+
     @Override
     public String toString() {
-        return String.format("-------------------- Autor --------------------" +
-            "Nombre: %s\n" +
+        List<String> nombreLibros = new ArrayList<>();
+        for(Libro libro : libros){
+            nombreLibros.add(libro.getTitulo());
+        }
+        return String.format("-------------------- Autor --------------------\n" +
+            "Autor: %s\n" +
             "Fecha de nacimiento: %s\n" +
-            "Fecha de fallecimiento: %s\n",
-            nombre, fechaDeNacimiento, fechaDeFallecimiento);
+            "Fecha de fallecimiento: %s\n" +
+            "Libros: %s\n",
+            nombre, fechaDeNacimiento, fechaDeFallecimiento, nombreLibros);
     }
 }
