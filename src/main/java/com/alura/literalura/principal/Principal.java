@@ -115,6 +115,7 @@ public class Principal {
                 } else{
                     DatosAutor datosAutor = datosLibro.autores().get(0);
                     Autor autor = new Autor(datosAutor);
+                    libro.setAutor(autor);
                     autorRepository.save(autor);
                 }
 
@@ -195,7 +196,7 @@ public class Principal {
         IntSummaryStatistics estadisticas = libros.stream()
             .filter(l -> l.getNumeroDeDescargas() > 0)
             .collect(Collectors.summarizingInt(Libro::getNumeroDeDescargas));
-        System.out.println("Total descargas: " + estadisticas.getCount());
+        System.out.println("Total libros: " + estadisticas.getCount());
         System.out.println("Media de descargas: " + estadisticas.getAverage());
         System.out.println("Libro más descargado: " + estadisticas.getMax());
         System.out.println("Libro menos descargado: " + estadisticas.getMin());
