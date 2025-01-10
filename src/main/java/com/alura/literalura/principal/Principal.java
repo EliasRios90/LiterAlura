@@ -9,6 +9,7 @@ import com.alura.literalura.model.Autor;
 import com.alura.literalura.model.DatosAutor;
 import com.alura.literalura.model.DatosBusqueda;
 import com.alura.literalura.model.DatosLibro;
+import com.alura.literalura.model.Idioma;
 import com.alura.literalura.model.Libro;
 import com.alura.literalura.repository.AutorRepository;
 import com.alura.literalura.repository.LibroRepository;
@@ -38,6 +39,7 @@ public class Principal {
                     3 - Listar autores registrados
                     4 - Listar autores vivos en un determinado año
                     5 - Listar libros por idioma
+                    
                     0 - Salir
                     """;
             System.out.println(menu);
@@ -49,6 +51,7 @@ public class Principal {
                 case 2: mostrarLibrosRegistrados(); break;
                 case 3: mostrarAutoresRegistrados(); break;
                 case 4: mostrarAutoresVivosPorAnio(); break;
+                case 5: mostrarLibrosPorIdioma(); break;
                 case 0: System.out.println("Cerrando la aplicación..."); break;
                 default: System.out.println("Opción inválida"); break;
             }
@@ -124,5 +127,38 @@ public class Principal {
         teclado.nextLine();
         autores = autorRepository.listaAutoresVivos(anio);
         autores.forEach(System.out::println);
+    }
+
+    private void mostrarLibrosPorIdioma(){
+        var opcion = -1;
+        List<Libro> librosIdioma = null;
+        while (opcion != 0) {
+            System.out.println("Ingrese el idioma para buscar los libros");
+            var opciones = """
+                1) en - Inglés
+                2) es - Español
+                3) pt - Portugués
+                4) fr - Francés
+
+                0) Volver atrás.
+                """;
+            System.out.println(opciones);
+            opcion = teclado.nextInt();
+            teclado.nextLine();
+
+            switch(opcion){
+                case 1: librosIdioma = libroRepository.findByIdioma(Idioma.en); break;
+                case 2: librosIdioma = libroRepository.findByIdioma(Idioma.es); break;
+                case 3: librosIdioma = libroRepository.findByIdioma(Idioma.pt); break;
+                case 4: librosIdioma = libroRepository.findByIdioma(Idioma.fr); break;
+                case 0: opcion = 0;
+                default: System.out.println("Opción incorrecta"); break;
+            }
+            if(librosIdioma.size() != 0){
+                librosIdioma.forEach(System.out::println);
+            }else{
+                System.out.println("No hay libros para mostrar");
+            }
+        }
     }
 }

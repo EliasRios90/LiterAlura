@@ -69,7 +69,8 @@ public class Libro {
             "Título: %s\n" +
             "Autor: %s\n" +
             "Idioma: %s\n" +
-            "Número de descargas: %s\n",
+            "Número de descargas: %s\n" +
+            "-----------------------------------------------\n",
             titulo, autor.getNombre(), idioma, numeroDeDescargas);
     }    
 }
