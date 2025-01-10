@@ -80,6 +80,13 @@ public class Autor {
         for(Libro libro : libros){
             nombreLibros.add(libro.getTitulo());
         }
+        
+        if(nombre.equals("Anonymous")){
+            nombre = "Anónimo";
+            fechaDeNacimiento = 0;
+            fechaDeFallecimiento = 0;
+        }
+        
         return String.format("-------------------- Autor --------------------\n" +
             "Autor: %s\n" +
             "Fecha de nacimiento: %s\n" +
